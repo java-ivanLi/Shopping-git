@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.AdvertiseMapper">
+
+	<select id="selectAdvertiseAll" resultType="com.sybinal.shop.model.Advertise"
+			parameterType="com.sybinal.shop.model.ProductCategory">
+		select  ad.*
+		from advertise ad INNER JOIN product_category pc on ad.category_id=pc.id
+		where 1=1
+		<if test="name != null and name != ''">
+			and pc.name like concat('%',#{name},'%')
+		</if>
+	</select>
+
+	<select id="selectAdvertiseCount" resultType="java.lang.Integer"
+			parameterType="com.sybinal.shop.model.ProductCategory">
+		select  COUNT(*)
+		from advertise ad inner  JOIN product_category pc on ad.category_id=pc.id
+		 where 1=1
+		<if test="name != null and name != ''">
+			and pc.name like concat('%',#{name},'%')
+		</if>
+
+	</select>
+
+	<delete id="removeAdvertise" >
+       delete from advertise where id=#{id}
+
+	</delete>
+
+   <select id="getAdvertiseContent" resultType="com.sybinal.shop.model.Advertise" >
+         select * from advertise where id=#{id}
+
+   </select>
+
+	<insert id="addAdvertise" parameterType="com.sybinal.shop.model.Advertise">
+		  insert into advertise
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null and name!=''">
+				name,
+			</if>
+			<if test="seqno!= null">
+				seqno,
+			</if>
+			<if test="url != null and url!=''">
+				url,
+			</if>
+			<if test="img != null and img!=''">
+				img,
+			</if>
+			<if test="category_id != null">
+				category_id,
+			</if>
+			<if test="index_flag != null">
+				index_flag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null and name!=''">
+				#{name},
+			</if>
+			<if test="seqno!= null">
+				#{seqno},
+			</if>
+			<if test="url != null and url!=''">
+				#{url},
+			</if>
+			<if test="img != null and img!=''">
+				#{img},
+			</if>
+			<if test="category_id != null">
+				#{category_id},
+			</if>
+			<if test="index_flag != null">
+				#{index_flag},
+			</if>
+		</trim>
+
+	</insert>
+
+	<update id="updateAdvertise"  parameterType="com.sybinal.shop.model.Advertise">
+          update  advertise
+<set>
+		<if test="name != null and name != ''">
+			name=#{name},
+		</if>
+		<if test="seqno!= null">
+			seqno=#{seqno},
+		</if>
+		<if test="url != null and url!=''">
+			url=#{url},
+		</if>
+		<if test="img != null and img!=''">
+			img=#{img},
+		</if>
+		<if test="category_id != null">
+			category_id=#{category_id},
+		</if>
+		<if test="index_flag != null">
+			index_flag=#{index_flag},
+		</if>
+</set>
+		where
+		id=#{id}
+
+	</update>
+
+	<select id="checkAdvertiseName" resultType="com.sybinal.shop.model.Advertise">
+		select  * from advertise where  name=#{name}
+	</select>
+
+
+	<select id="selectProductCategory" resultType="com.sybinal.shop.model.ProductCategory">
+		select  * from product_category
+	</select>
+
+
+
+	<select id="selectIndexAdvertiseFalg" resultType="com.sybinal.shop.model.Advertise">
+		select * from advertise where index_flag=1;
+	</select>
+</mapper>
